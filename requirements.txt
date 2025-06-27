@@ -2,9 +2,9 @@ fastapi
 uvicorn[standard]
 jinja2
 python-multipart
-sqlalchemy
+SQLAlchemy
 gitpython
 paramiko
 itsdangerous
-wexpect
+wexpect ; sys_platform == 'win32'
 setuptools
