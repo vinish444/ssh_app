@@ -1,0 +1,54 @@
+/* manage.css - Styling for Manage App Page */
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.column {
+  flex: 1;
+  min-width: 400px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #f9f9f9;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+textarea,
+input[type="text"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 8px 12px;
+  background-color: #d9534f;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #c9302c;
+}

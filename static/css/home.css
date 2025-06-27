@@ -1,0 +1,86 @@
+/* home.css - Styling for SSH Admin Panel Home Page */
+
+/* Base layout */
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+/* Heading style */
+h1 {
+  margin-bottom: 10px;
+}
+
+/* Top bar with settings link */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Manage link on top right */
+.manage-link {
+  color: #673ab7;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Form label styling */
+label {
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+}
+
+/* Ensure Select2 dropdowns expand fully */
+.select2 {
+  width: 100% !important;
+}
+
+/* Grid layout for left/right panels */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+/* Panel box styling */
+.column {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  flex: 1;
+  min-width: 400px;
+}
+
+/* Button styling */
+button {
+  background-color: #d9534f;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #c9302c;
+}
+
+/* Multiline input box (for IP paste) */
+textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+}

@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+sqlalchemy
+gitpython
+paramiko
+itsdangerous
+wexpect
+setuptools

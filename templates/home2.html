@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SSH Admin Panel</title>
+
+  <!-- External CSS -->
+  <link href="/static/css/select2.min.css" rel="stylesheet" />
+  <link href="/static/css/home.css" rel="stylesheet" />
+
+  <!-- External JS -->
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/select2.min.js"></script>
+  <script src="/static/js/home.js" defer></script>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>SSH Admin Panel</h1>
+  <a href="/manage" class="manage-link"><span style="font-size: 20px;">⚙️</span> Manage App</a>
+</div>
+
+<div style="margin: 20px 0;">
+  <label for="mode">Select Mode:</label>
+  <select id="mode" class="select2">
+    <option value="" selected disabled>-- Select Mode --</option>
+    <option value="single">Single Mode</option>
+    <option value="multi">Multiple Mode</option>
+  </select>
+</div>
+
+<div id="mode-section" style="display:none;">
+  <!-- Single Device Section -->
+  <div id="single-device-section" class="row" style="display:none;">
+    <div class="column">
+      <h2>Connect via Terminal Server</h2>
+      <form method="post" action="/connect">
+        <label>Region</label>
+        <select id="single_ts_region" class="select2">
+        <option value="" selected disabled>-- Select Region --</option>
+        {% for r in region_titles %}
+        <option value="{{ r }}">{{ r }}</option>
+        {% endfor %}
+        </select>
+
+        <label>DC</label>
+        <select id="single_ts_dc" class="select2"><option value="">-- Select DC --</option></select>
+        <label>Building</label>
+        <select id="single_ts_building" class="select2"><option value="">-- Select Building --</option></select>
+        <label>Device IP</label>
+        <select name="dev_ip" id="single_ts_dev_ip" class="select2"><option value="">-- Select IP --</option></select>
+
+        <label>Terminal IP</label>
+        <select name="ts_ip" id="single_ts_ip" class="select2">
+          <option value="">-- Select --</option>
+        </select>
+
+        <label>TS Credential</label>
+        <select name="ts_cred" class="select2">
+          <option value="">-- Select --</option>
+          {% for c in ts_creds %}<option value="{{ c.title }}">{{ c.title }}</option>{% endfor %}
+        </select>
+        <label>Device Credential</label>
+        <select name="dev_cred" class="select2">
+          <option value="">-- Select --</option>
+          {% for c in dev_creds %}<option value="{{ c.title }}">{{ c.title }}</option>{% endfor %}
+        </select>
+
+        <button type="submit">Connect</button>
+      </form>
+    </div>
+
+    <div class="column">
+      <h2>Direct Connect</h2>
+      <form method="post" action="/connect-direct">
+        <label for="single_dev_region">Region</label>
+        <select id="single_dev_region" class="select2">
+          <option value="" selected disabled>-- Select Region --</option>
+          {% for r in region_titles %}
+            {% if r != "All" %}
+              <option value="{{ r }}">{{ r }}</option>
+            {% endif %}
+          {% endfor %}
+          <option value="All">All</option>
+        </select>
+
+
+        <label>DC</label>
+        <select id="single_dev_dc" class="select2"><option value="">-- Select DC --</option></select>
+        <label>Building</label>
+        <select id="single_dev_building" class="select2"><option value="">-- Select Building --</option></select>
+        <label>Device IP</label>
+        <select name="dev_ip" id="single_dev_ip" class="select2"><option value="">-- Select IP --</option></select>
+
+        <label>Device Credential</label>
+        <select name="dev_cred" class="select2">
+          <option value="">-- Select --</option>
+          {% for c in dev_creds %}<option value="{{ c.title }}">{{ c.title }}</option>{% endfor %}
+        </select>
+
+        <button type="submit">Connect</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Multi Device Section -->
+<div id="multi-device-section" class="row" style="display:none;">
+
+  <!-- Multi via Terminal Server -->
+  <div class="column">
+    <h2>Multi Connect via Terminal Server</h2>
+    <form method="post" action="/multi-connect">
+      <label>Region</label>
+      <select id="multi_ts_region" class="select2">
+        <option value="" selected disabled>-- Select Region --</option>
+        {% for r in region_titles %}
+          {% if r != "All" %}
+            <option value="{{ r }}">{{ r }}</option>
+          {% endif %}
+        {% endfor %}
+        <option value="All">All</option>
+      </select>
+
+      <label>DC</label>
+      <select id="multi_ts_dc" class="select2"><option value="">-- Select DC --</option></select>
+      <label>Building</label>
+      <select id="multi_ts_building" class="select2"><option value="">-- Select Building --</option></select>
+
+      <label>Device IPs</label>
+      <select name="multi_ips" id="multi_ts_dev_ip" class="select2" multiple>
+        <option disabled value="">-- Select IPs --</option>
+      </select>
+
+      <label>Paste Device IPs</label>
+      <textarea name="device_ips" rows="4" placeholder="10.0.0.1&#10;10.0.0.2"></textarea>
+
+      <label>Terminal IP</label>
+      <select name="ts_ip" id="multi_ts_ip" class="select2">
+        <option value="">-- Select --</option>
+      </select>
+
+      <label>TS Credential</label>
+      <select name="ts_cred" class="select2">
+        <option value="">-- Select --</option>
+        {% for c in ts_creds %}<option value="{{ c.title }}">{{ c.title }}</option>{% endfor %}
+      </select>
+
+      <label>Device Credential</label>
+      <select name="dev_cred" class="select2">
+        <option value="">-- Select --</option>
+        {% for c in dev_creds %}<option value="{{ c.title }}">{{ c.title }}</option>{% endfor %}
+      </select>
+
+      <button type="submit">Connect</button>
+    </form>
+  </div>
+
+  <!-- ✅ Multi Direct Connect -->
+  <div class="column">
+    <h2>Multi Direct Connect</h2>
+    <form method="post" action="/multi-connect-direct">
+      <label>Region</label>
+      <select id="multi_dev_region" class="select2">
+        <option value="" selected disabled>-- Select Region --</option>
+        {% for r in region_titles %}
+          {% if r != "All" %}
+            <option value="{{ r }}">{{ r }}</option>
+          {% endif %}
+        {% endfor %}
+        <option value="All">All</option>
+      </select>
+
+      <label>DC</label>
+      <select id="multi_dev_dc" class="select2"><option value="">-- Select DC --</option></select>
+      <label>Building</label>
+      <select id="multi_dev_building" class="select2"><option value="">-- Select Building --</option></select>
+
+      <label>Device IPs</label>
+      <select name="multi_ips" id="multi_dev_ip" class="select2" multiple>
+        <option disabled value="">-- Select IPs --</option>
+      </select>
+
+      <label>Paste Device IPs</label>
+      <textarea name="device_ips" rows="4" placeholder="10.0.0.1&#10;10.0.0.2"></textarea>
+
+      <label>Device Credential</label>
+      <select name="dev_cred" class="select2">
+        <option value="">-- Select --</option>
+        {% for c in dev_creds %}<option value="{{ c.title }}">{{ c.title }}</option>{% endfor %}
+      </select>
+
+      <button type="submit">Connect</button>
+    </form>
+  </div>
+
+</div>
+</body>
+</html>

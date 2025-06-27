@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Manage App</title>
+
+  <!-- Local static files -->
+  <link rel="stylesheet" href="/static/css/select2.min.css" />
+  <link rel="stylesheet" href="/static/css/manage.css" />
+
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/select2.min.js"></script>
+  <script src="/static/js/manage.js" defer></script>
+</head>
+<body>
+
+<a href="/" style="float:right;">&larr; Back to Connect</a>
+<h1>Manage App</h1>
+
+<!-- Add Terminal Servers -->
+<div class="row">
+  <div class="column">
+    <h2>Add Terminal Servers</h2>
+    <form method="post" action="/add-ips" enctype="multipart/form-data">
+      <label>Region:</label><input type="text" name="region">
+      <label>DC:</label><input type="text" name="dc">
+      <label>Building:</label><input type="text" name="building">
+      <label>Terminal Server IPs:</label><textarea name="ip_list" rows="4"></textarea>
+      <label>or Upload CSV:</label><input type="file" name="file">
+      <input type="hidden" name="target" value="ts">
+      <button type="submit">Add Terminal Servers</button>
+    </form>
+  </div>
+
+  <!-- Delete Terminal Servers -->
+  <div class="column">
+    <h2>Delete Terminal Servers</h2>
+    <form method="post" action="/delete-ips">
+      <label>Select Region:</label>
+      <select id="ts_region_select" name="region">
+        <option value="">-- Select Region --</option>
+        {% for r in ts_region_titles %}
+          <option value="{{ r }}">{{ r }}</option>
+        {% endfor %}
+      </select>
+      <label>Select DC:</label>
+      <select id="ts_dc_select" name="dc"></select>
+      <label>Select Building:</label>
+      <select id="ts_building_select" name="building"></select>
+      <label>Select IPs: <input type="checkbox" id="select-all-ts"> Select All</label>
+      <select name="selected_ips" id="ts_ips" class="select2-multiple" multiple></select>
+      <input type="hidden" name="target" value="ts">
+      <button type="submit">Delete Selected</button>
+    </form>
+  </div>
+</div>
+
+<!-- Add Devices -->
+<div class="row">
+  <div class="column">
+    <h2>Add Devices</h2>
+    <form method="post" action="/add-ips" enctype="multipart/form-data">
+      <label>Region:</label><input type="text" name="region">
+      <label>DC:</label><input type="text" name="dc">
+      <label>Building:</label><input type="text" name="building">
+      <label>Device IPs:</label><textarea name="ip_list" rows="4"></textarea>
+      <label>or Upload CSV:</label><input type="file" name="file">
+      <input type="hidden" name="target" value="dev">
+      <button type="submit">Add Devices</button>
+    </form>
+  </div>
+
+  <!-- Delete Devices -->
+  <div class="column">
+    <h2>Delete Devices</h2>
+    <form method="post" action="/delete-ips">
+      <label>Select Region:</label>
+      <select id="dev_region_select" name="region">
+        <option value="">-- Select Region --</option>
+        {% for r in dev_region_titles %}
+          <option value="{{ r }}">{{ r }}</option>
+        {% endfor %}
+      </select>
+      <label>Select DC:</label>
+      <select id="dev_dc_select" name="dc"></select>
+      <label>Select Building:</label>
+      <select id="dev_building_select" name="building"></select>
+      <label>Select IPs: <input type="checkbox" id="select-all-dev"> Select All</label>
+      <select name="selected_ips" id="dev_ips" class="select2-multiple" multiple></select>
+      <input type="hidden" name="target" value="dev">
+      <button type="submit">Delete Selected</button>
+    </form>
+  </div>
+</div>
+
+<!-- Credentials -->
+<div class="row">
+  <div class="column">
+    <h2>Add Credentials</h2>
+    <form method="post" action="/add-cred">
+      <label>Title:</label><input type="text" name="title">
+      <label>Username:</label><input type="text" name="username">
+      <label>Password:</label><input type="password" name="password">
+      <label>Target:</label>
+      <select name="target">
+        <option value="ts">Terminal Server</option>
+        <option value="dev">Device</option>
+      </select>
+      <button type="submit">Add Credential</button>
+    </form>
+  </div>
+<!-- Delete Credentials -->
+  <div class="column">
+    <h2>Delete Credentials</h2>
+    <form method="post" action="/delete-creds">
+      <label>TS Credentials:</label>
+      <select name="cred_titles[]" class="select2">
+        <option value="">-- Select Credential --</option>
+        {% for c in ts_creds %}
+        <option value="{{ c.title }}">{{ c.title }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="target" value="ts">
+      <button type="submit">Delete Selected</button>
+    </form>
+
+    <form method="post" action="/delete-creds" style="margin-top: 20px;">
+      <label>Device Credentials:</label>
+      <select name="cred_titles[]" class="select2">
+        <option value="">-- Select Credential --</option>
+        {% for c in dev_creds %}
+        <option value="{{ c.title }}">{{ c.title }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="target" value="dev">
+      <button type="submit">Delete Selected</button>
+    </form>
+  </div>
+</div>
+<!-- Command Templates -->
+<div class="row">
+    <div class="column">
+        <h2>Add Command Templates</h2>
+        <form method="post" action="/add-commands" enctype="multipart/form-data">
+            <input type="text" name="vendor" placeholder="e.g., Cisco">
+            <textarea name="cmd_text" rows="5" placeholder="Paste commands one per line"></textarea>
+            <label>or Upload CSV:</label>
+            <input type="file" name="file">
+            <button type="submit">Add Commands</button>
+        </form>
+    </div>
+
+    <!-- Delete Command Templates -->
+    <div class="column">
+      <h2>Delete Command Templates</h2>
+      <form method="post" action="/delete-commands">
+        <label>Select Vendor:</label>
+        <select id="vendor-select" class="select2-single" name="vendor" required>
+          <option value="">-- Select Vendor --</option>
+          {% for v in command_vendors %}
+            <option value="{{ v }}">{{ v }}</option>
+          {% endfor %}
+        </select><br><br>
+
+        <label>Select Commands:</label>
+        <select name="cmd_ids" id="command-select" class="select2-multiple" multiple></select>
+
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+</div>
+
+</body>
+</html>

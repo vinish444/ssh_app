@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Execute Command</title>
+
+  <!-- Select2 CSS -->
+  <link href="/static/css/select2.min.css" rel="stylesheet" />
+  <link href="/static/css/command.css" rel="stylesheet" />
+
+  <!-- JS -->
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/select2.min.js"></script>
+  <script>
+    window.outputData = {{ output | tojson }};
+    window.selectedVendor = "{{ selected_vendor }}";
+    window.multiIps = {{ multi_ips | tojson }};
+    window.selectedIps = {{ selected_ips | default([]) | tojson }};
+  </script>
+  <script src="/static/js/command.js" defer></script>
+</head>
+
+<body>
+<h2>Execute Command</h2>
+<div id="loading-overlay">
+  <div id="loading-content">
+    <img src="/static/images/loading_img1.gif" alt="Loading..." width="200" />
+    <p>Please wait while command is being executed...</p>
+  </div>
+</div>
+
+<form id="commandForm">
+  <div class="container">
+    <div class="left">
+      <div class="form-wrapper">
+
+        <label for="template_title">Command Template Title:</label>
+        <select id="template_title" name="template_title" onchange="fetchCommands()">
+          <option value="" disabled selected>-- Select Vendor --</option>
+        </select>
+
+        <label for="selected_ips">Select IPs to Run Command:</label>
+        <select id="selected_ips" name="selected_ips" multiple required></select>
+
+        <label for="command">Enter or Select Command:</label>
+        <textarea id="command" name="command" placeholder="Enter or select command..." oninput="suggestCommands()"></textarea>
+        <div id="suggestions"></div>
+
+        <button type="submit" class="button-red">Run Command</button>
+        <a class="back-link" href="/">← Back to Home</a>
+      </div>
+    </div>
+
+    <div class="right">
+      <label for="ip_select">Select IP to View Output:</label>
+      <select id="ip_select"></select>
+
+      <div class="output-wrapper">
+        <pre id="output_area">
+          {% if output %}
+            {% if output is mapping %}
+              {{ output | tojson(indent=2) }}
+            {% else %}
+              {{ output }}
+            {% endif %}
+          {% else %}
+            No output available.
+          {% endif %}
+        </pre>
+
+      </div>
+
+    </div>
+
+
+  </div>
+</form>
+</body>
+</html>
