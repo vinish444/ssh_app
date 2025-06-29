@@ -10,9 +10,9 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
 import models
-from db import SessionLocal, engine
-from ssh_logic import execute_ssh_command, execute_direct_ssh_command
-from models import CommandOutput
+from gui_apps.ss.db import SessionLocal, engine
+from gui_apps.ss.ssh_logic import execute_ssh_command, execute_direct_ssh_command
+from gui_apps.ss.models import CommandOutput
 
 ssh_app = FastAPI()
 ssh_app.add_middleware(SessionMiddleware, secret_key="super-secret-key")
