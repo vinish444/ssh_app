@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime
-from gui_apps.ss.db import Base
+from gui_apps.ssh_app.db import Base
 from datetime import datetime
 
 class TerminalServer(Base):
