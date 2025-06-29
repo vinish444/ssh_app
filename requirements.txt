@@ -5,6 +5,5 @@ python-multipart
 SQLAlchemy
 gitpython
 paramiko
-itsdangerous>=2.1.0
 wexpect ; sys_platform == 'win32'
 setuptools
